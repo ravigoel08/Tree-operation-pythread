@@ -13,10 +13,10 @@ class BTNode:
 
 # Binary Tree 
 class BinaryTree:
-    
     def __init__(self, root=None):
         self.root=root
     
+    # overrided repr to get custom output format
     def __repr__(self, current):
         return f'{current and current.left and current.left.val}<-Left-{current and current.val}-Right->{current and current.right and current.right.val}'
 
@@ -46,7 +46,7 @@ class BinaryTree:
                     break
         return
     
-    # delete the rightmost node
+    # delete the last node
     def delrm(self, node):
         if self.root is None:
             return 
@@ -96,6 +96,8 @@ class BinaryTree:
             
             if foundnode:
                 lastnode = current.val
+                
+                # delete the last node
                 self.delrm(current)
                 with foundnode.lock:
                     foundnode.val = lastnode
@@ -138,10 +140,15 @@ class BinaryTree:
             if current.right:
                 stack.append(current.right)
 
+# overrided the run method in this subclass
 class MyThread(Thread):
     def run(self):
+        
+        # to check if thread running in parallel or not
         print(threading._enumerate(), threading.active_count())
         sleep(0.3)
+        
+        # check if arguements exists or not and call method based on it
         if self._args:
             addn, deln, modi = self._args
             if addn:
